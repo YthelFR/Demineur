@@ -1,0 +1,31 @@
+/* ------- BODY ------ */
+
+body {
+  background: white;
+  margin: 100px;
+}
+
+h1 {
+  font-size: 20px;
+  color: #0005c2;
+}
+
+/* ------- MENU ------ */
+
+.menus .menu {
+  padding: 10px 25px;
+  color: white;
+  background-color: grey;
+  width: 100px;
+  margin: 8px;
+  border-radius: 25px;
+  border: solid rgb(74, 56, 98) 2px;
+  text-align: center;
+}
+
+.menus .menu:hover {
+  background-color: rgb(162, 130, 192);
+  transition: background-color 0.5s;
+}
+
+/* ------- TERRAIN ------ */
