@@ -5,18 +5,18 @@ let Demineur = {
   name: "Demineur",
   difficultees: {
     facile: {
-      lines: 10,
-      columns: 10,
+      lignes: 10,
+      colonnes: 10,
       mines: 8,
     },
     normal: {
-      lines: 14,
-      columns: 14,
+      lignes: 14,
+      colonnes: 14,
       mines: 18,
     },
     difficile: {
-      lines: 18,
-      columns: 18,
+      lignes: 18,
+      colonnes: 18,
       mines: 36,
     },
   },
@@ -31,7 +31,9 @@ let Demineur = {
     terrain: new Array(),
   },
 
-  initialisation: function () {},
+  initialisation: function () {
+    this.commencerJeu("facile");
+  },
 
   // Initialisation du jeu selon la difficulté
 
@@ -44,24 +46,50 @@ let Demineur = {
   // Création du plateau de jeu sur la page HTML, création des classes/ID pour lier au CSS
 
   demarrerPlateau() {
-    let plateau = document.getElementById("plateau");
+    plateau = document.getElementById("plateau");
+
+    // Pour effacer le résultat de la partie précédente
     plateau.innerHTML = "";
     document.getElementById("resultat").innerHTML = "";
 
     bordure = document.createElement("table");
-    terrain = document.createElement("terrainBody");
+    terrain = document.createElement("terrain");
     bordure.appendChild(terrain);
+
+    // Empêcher l'utilisateur de pouvoir cliquer en dehors de la zone de jeu afin d'éviter
+    // un bug, pour sécuriser la zone.
+    bordure.setAttribute("oncontextmenu", "return false;");
+
     bordure.className = "terrain";
     plateau.appendChild(bordure);
 
     // Création des cases du jeu avec une fonction "if" afin de récupérer les informations de
-    // difficultés (nombre de lignes/colonnes/mines) et les représenter à l'écran.
+    // difficultés (nombre de lignes/colonnes) et les représenter à l'écran.
+
+    for (i = 1; i <= this.parametres["lignes"]; i++) {
+      // Création des lignes
+      ligne = document.createElement("tr");
+
+      // Création des colonnes et cases
+      for (j = 1; j <= this.parametres["colonnes"]; j++) {
+        cellule = document.createElement("td");
+        cellule.id = "cellule-" + i + "-" + j;
+        cellule.className = "cellule";
+        cellule.setAttribute(
+          "onclick",
+          this.name + ".verifierPosition(" + i + ", " + j + ", true);"
+        );
+        cellule.setAttribute(
+          "oncontextmenu",
+          this.name + ".marquerPosition(" + i + ", " + j + "); return false;"
+        );
+        ligne.appendChild(cellule);
+      }
+      terrain.appendChild(ligne);
+    }
 
     // Définition d'une action au clic pour l'utilisateur afin de pouvoir cliquer sur les
     // cases du jeu.
-
-    // Empêcher l'utilisateur de pouvoir cliquer en dehors de la zone de jeu afin d'éviter
-    // un bug, pour sécuriser la zone.
 
     // Ajouter une fonction qui permet de rendre les mines à des emplacements aléatoires
     // sur toutes les difficultés du jeu afin que chaque partie soit différente.
@@ -85,5 +113,42 @@ let Demineur = {
 
   // Fonction reset du plateau en cas de partie terminée ou qui initialisera les données du programme
 
-  resetPlateau() {},
+  resetPlateau() {
+    // Initialisation du terrain avec toutes les cases à 0.
+    // Je mets les lignes et les colonnes à 0.
+
+    this.jeu.terrain = new Array();
+    for (i = 1; i <= this.parametres["lignes"]; i++) {
+      this.jeu.terrain[i] = new Array();
+      for (j = 1; j <= this.parametres["colonnes"]; j++) {
+        this.jeu.terrain[i][j] = 0;
+      }
+    }
+
+    // Initialisation des mines.
+    for (i = 1; i <= this.parametres["mines"]; i++) {
+      x = Math.floor(Math.random() * (this.parametres["colonnes"] - 1) + 1);
+      y = Math.floor(Math.random() * (this.parametres["lignes"] - 1) + 1);
+    }
+    while (this.jeu.terrain[x][y] == -1) {
+      x = Math.floor(Math.random() * (this.parametres["colonnes"] - 1) + 1);
+      y = Math.floor(Math.random() * (this.parametres["lignes"] - 1) + 1);
+    }
+    this.jeu.terrain[x][y] = -1;
+
+    for (j = x - 1; j <= x + 1; j++) {
+      if (j == 0 || j == this.parametres["colonnes"] + 1) {
+        continue;
+      }
+      for (k = y - 1; k <= y + 1; k++) {
+        if (k == 0 || k == this.parametres["lignes"] + 1) {
+          continue;
+        }
+        if (this.jeu.terrain[j][k] != -1) {
+          this.jeu.terrain[j][k]++;
+        }
+      }
+    }
+    this.jeu.statut = 1;
+  },
 };

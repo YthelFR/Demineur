@@ -1,8 +1,12 @@
 /* ------- BODY ------ */
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   background: white;
-  margin: 100px;
+  margin: 20px 50px;
 }
 
 h1 {
@@ -28,4 +32,48 @@ h1 {
   transition: background-color 0.5s;
 }
 
+/* ------ PAGE ------ */
+
+.page {
+  display: flex;
+}
+
+.page .game {
+  width: 65%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.page .options {
+  width: 35%;
+  display: inline-block;
+  vertical-align: top;
+}
+
 /* ------- TERRAIN ------ */
+
+.terrain {
+  background-color: lightgray;
+  border-radius: 10px;
+}
+
+.terrain .cellule {
+  width: 30px;
+  height: 30px;
+  background-color: rgb(92, 47, 133);
+}
+
+.terrain .cellule:hover {
+  background-color: rgb(162, 130, 192);
+}
+
+.terrain .cellule .mines {
+  background-image: url(../medias/bomb-clipart.svg);
+  background-color: red;
+  cursor: default;
+}
+
+.terrain .cellule .mines:hover {
+  background-image: url(../medias/bomb-clipart.svg);
+  background-color: red;
+}

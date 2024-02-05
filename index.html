@@ -9,15 +9,23 @@
     <title>Démineur</title>
   </head>
   <body>
+    <!-- Création des divs pour le jeu -->
+    <h1>Démineur</h1>
     <div class="page">
-      <h1>Démineur</h1>
       <div class="game" id="plateau"></div>
       <div class="options">
         <div class="resultat" id="resultat"></div>
+        <!-- Mise en place du menu de sélection de difficulté avec initialisation au clic -->
         <div class="menus">
-          <div class="menu">Facile</div>
-          <div class="menu">Moyen</div>
-          <div class="menu">Difficile</div>
+          <div class="menu" onclick="Demineur.commencerJeu('facile')">
+            Facile
+          </div>
+          <div class="menu" onclick="Demineur.commencerJeu('normal')">
+            Moyen
+          </div>
+          <div class="menu" onclick="Demineur.commencerJeu('difficile')">
+            Difficile
+          </div>
         </div>
       </div>
     </div>
