@@ -67,13 +67,25 @@ h1 {
   background-color: rgb(162, 130, 192);
 }
 
-.terrain .cellule .mines {
+.terrain .cellule.mine {
   background-image: url(../medias/bomb-clipart.svg);
   background-color: red;
   cursor: default;
 }
 
-.terrain .cellule .mines:hover {
+.terrain .cellule.mine:hover {
   background-image: url(../medias/bomb-clipart.svg);
   background-color: red;
 }
+
+.terrain .cellule.OK {
+  background: none;
+  color: white;
+}
+
+.terrain .cellule.OK:hover {
+  background: none;
+}
+
+/* background-image: url(medias/pngtree-black-colorful-number-1-png-image_2786493.jpeg);
+    background-size: contain; */

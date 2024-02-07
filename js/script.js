@@ -88,28 +88,88 @@ let Demineur = {
       terrain.appendChild(ligne);
     }
 
-    // Définition d'une action au clic pour l'utilisateur afin de pouvoir cliquer sur les
-    // cases du jeu.
-
     // Ajouter une fonction qui permet de rendre les mines à des emplacements aléatoires
     // sur toutes les difficultés du jeu afin que chaque partie soit différente.
   },
 
-  // Ajout d'une fonction qui permet à l'utilisateur, en cas de clic-droit sur une case, de
-  // marquer la case afin de marquer les potentielles position des mines. Bien vérifier quelle
-  // case peut-être marquée (au cas où l'utilisateur tente de marquer une case qui est déjà révélée).
+  marquerPosition: function (x, y) {
+    // Position à marquer
 
-  // Rajouter à la fonction une fonction qui permet d'enlever ce marquage précédemment posé.
+    // Définition d'une action au clic pour l'utilisateur afin de pouvoir cliquer sur les
+    // cases du jeu.
 
-  // Ajouter une fonction essentielle pour un démineur : révéler toutes les cases dites "vides" ou "0"
-  // qui sont adjacentes les unes aux autres afin de révéler le terrain vide.
+    if (this.jeu.statut != 1) return; // Sécurité au cas où la partie n'est pas commencée.
 
-  // Ajouter une fonction qui, lorsque l'utilisateur trouve une case "minée", met fin à la partie.
+    if (this.jeu.terrain[x][y] == -2) return; // Bloquer le clic droit sur les cases déjà visitées.
 
-  // Ajouter la fonction qui permet à l'utilisateur de savoir si des mines sont à proximité.
-  // C'est-à-dire d'afficher les numeros "1", "2", "3"...
+    // Ajout d'une fonction qui permet à l'utilisateur, en cas de clic-droit sur une case, de
+    // marquer la case afin de marquer les potentielles position des mines. Bien vérifier quelle
+    // case peut-être marquée (au cas où l'utilisateur tente de marquer une case qui est déjà révélée).
+    // Rajouter à la fonction une fonction qui permet d'enlever ce marquage précédemment posé.
 
-  // Ajouter les fonctions qui permettent d'afficher la "Victoire" ou la "Défaite" de l'utilisateur.
+    if (this.jeu.terrain[x][y] < -90) {
+      document.getElementById("cellule-" + x + "-" + y).className = "cellule";
+      document.getElementById("cellule-" + x + "-" + y).innerHTML = "";
+      this.jeu.terrain[x][y] += 100;
+    } else {
+      document.getElementById("cellule-" + x + "-" + y).className =
+        "cellule marquée";
+      document.getElementById("cellule-" + x + "-" + y).innerHTML = "!";
+      this.jeu.terrain[x][y] -= 100;
+    }
+  },
+
+  verifierPosition: function (x, y, verifier) {
+    if (this.jeu.statut != 1) return; // Sécurité au cas où la partie n'est pas commencée.
+
+    if (this.jeu.terrain[x][y] == -2) {
+      return;
+    } // Bloquer le clic droit sur les cases déjà visitées.
+
+    if (this.jeu.terrain[x][y] < -90) {
+      return;
+    } // Enlever les marquages précédemment mis si la case est à 0.
+
+    // Ajouter une fonction qui, lorsque l'utilisateur trouve une case "minée", met fin à la partie.
+    if (this.jeu.terrain[x][y] == -1) {
+      document.getElementById("cellule-" + x + "-" + y).className =
+        "cellule mine";
+      this.annoncerDefaite();
+      return;
+    }
+
+    // Permet de dire si la case est sûre
+    document.getElementById("cellule-" + x + "-" + y).className = "cellule OK";
+
+    if (this.jeu.terrain[x][y] > 0) {
+      document.getElementById("cellule-" + x + "-" + y).innerHTML =
+        this.jeu.terrain[x][y];
+      this.jeu.terrain[x][y] = -2;
+    } else if (this.jeu.terrain[x][y] == 0) {
+      this.jeu.terrain[x][y] = -2;
+
+      // Ajouter une fonction essentielle pour un démineur : révéler toutes les cases dites "vides" ou "0"
+      // qui sont adjacentes les unes aux autres afin de révéler le terrain vide.
+      for (let j = x - 1; j <= x + 1; j++) {
+        if (j == 0 || j == this.parametres["colonnes"] + 1) continue;
+        for (let k = y - 1; k <= y - 1; k++) {
+          if (k == 0 || k == this.parametres["lignes"] + 1) continue;
+          if (this.jeu.terrain[j][k] > -1) {
+            this.verifierPosition(j, k, false);
+          }
+        }
+      }
+    }
+
+    // let celluleImg = document.querySelectorAll(".cellule.OK");
+    // if ((celluleImg = 1)) {
+    //   celluleImg.innerHTML = `<img src="./medias/pngtree-black-colorful-number-1-png-image_2786493.jpeg"></img>`;
+    // }
+
+    // console.log(celluleImg);
+
+    if (verifier !== false) this.verifierVictoire();
+  },
 
   // Fonction reset du plateau en cas de partie terminée ou qui initialisera les données du programme
 
@@ -129,26 +189,49 @@ let Demineur = {
     for (i = 1; i <= this.parametres["mines"]; i++) {
       x = Math.floor(Math.random() * (this.parametres["colonnes"] - 1) + 1);
       y = Math.floor(Math.random() * (this.parametres["lignes"] - 1) + 1);
-    }
-    while (this.jeu.terrain[x][y] == -1) {
-      x = Math.floor(Math.random() * (this.parametres["colonnes"] - 1) + 1);
-      y = Math.floor(Math.random() * (this.parametres["lignes"] - 1) + 1);
-    }
-    this.jeu.terrain[x][y] = -1;
 
-    for (j = x - 1; j <= x + 1; j++) {
-      if (j == 0 || j == this.parametres["colonnes"] + 1) {
-        continue;
+      while (this.jeu.terrain[x][y] == -1) {
+        x = Math.floor(Math.random() * (this.parametres["colonnes"] - 1) + 1);
+        y = Math.floor(Math.random() * (this.parametres["lignes"] - 1) + 1);
       }
-      for (k = y - 1; k <= y + 1; k++) {
-        if (k == 0 || k == this.parametres["lignes"] + 1) {
-          continue;
-        }
-        if (this.jeu.terrain[j][k] != -1) {
-          this.jeu.terrain[j][k]++;
+      this.jeu.terrain[x][y] = -1;
+
+      // Ajouter la fonction qui permet à l'utilisateur de savoir si des mines sont à proximité.
+      // C'est-à-dire d'afficher les numeros "1", "2", "3"...
+
+      for (j = x - 1; j <= x + 1; j++) {
+        if (j == 0 || j == this.parametres["colonnes"] + 1) continue;
+        for (k = y - 1; k <= y + 1; k++) {
+          if (k == 0 || k == this.parametres["lignes"] + 1) continue;
+          if (this.jeu.terrain[j][k] != -1) this.jeu.terrain[j][k]++;
         }
       }
     }
     this.jeu.statut = 1;
+  },
+
+  // Ajouter les fonctions qui permettent d'afficher la "Victoire" ou la "Défaite" de l'utilisateur.
+
+  verifierVictoire: function () {
+    for (var i = 1; i <= this.parametres["lignes"]; i++) {
+      for (var j = 1; j <= this.parametres["colonnes"]; j++) {
+        v = this.jeu.terrain[i][j];
+        if (v != -1 && v != -2 && v != -101) return;
+      }
+    }
+
+    this.annoncerVictoire();
+  },
+
+  annoncerVictoire: function () {
+    document.getElementById("resultat").innerHTML = "VICTOIRE !";
+    document.getElementById("resultat").style.color = "green";
+    this.jeu.statut = 0;
+  },
+
+  annoncerDefaite: function () {
+    document.getElementById("resultat").innerHTML = "DEFAITE !";
+    document.getElementById("resultat").style.color = "red";
+    this.jeu.statut = 0;
   },
 };
