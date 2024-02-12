@@ -5,29 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./styles/style.css" />
-    <script src="./js/script.js" onload></script>
     <title>Démineur</title>
   </head>
   <body>
     <!-- Création des divs pour le jeu -->
-    <h1>Démineur</h1>
+
     <div class="page">
       <div class="game" id="plateau"></div>
       <div class="options">
+        <h1>Sauvez les cornichons !</h1>
         <div class="resultat" id="resultat"></div>
         <!-- Mise en place du menu de sélection de difficulté avec initialisation au clic -->
         <div class="menus">
-          <div class="menu" onclick="Demineur.commencerJeu('facile')">
-            Facile
-          </div>
-          <div class="menu" onclick="Demineur.commencerJeu('normal')">
-            Moyen
-          </div>
-          <div class="menu" onclick="Demineur.commencerJeu('difficile')">
-            Difficile
-          </div>
+          <div class="menu facile">Facile</div>
+          <div class="menu normal">Moyen</div>
+          <div class="menu difficile">Difficile</div>
         </div>
       </div>
     </div>
+    <script src="./js/script.js" type="module"></script>
   </body>
 </html>

@@ -5,31 +5,65 @@
 }
 
 body {
-  background: white;
+  background: #8fbfa0;
   margin: 20px 50px;
-}
-
-h1 {
-  font-size: 20px;
-  color: #0005c2;
 }
 
 /* ------- MENU ------ */
 
+.menus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+h1 {
+  font-size: 40px;
+  color: #2f4858;
+  background-color: #5ea893;
+  width: fit-content;
+  padding: 2% 4%;
+  text-align: center;
+  border-radius: 25px;
+}
+
 .menus .menu {
+  font-size: 30px;
   padding: 10px 25px;
-  color: white;
-  background-color: grey;
-  width: 100px;
+  color: #2f4858;
+  background-color: #5ea893;
+  width: fit-content;
   margin: 8px;
   border-radius: 25px;
-  border: solid rgb(74, 56, 98) 2px;
-  text-align: center;
+  border: solid #2f4858 2px;
+  transition: background-color 1s;
 }
 
 .menus .menu:hover {
   background-color: rgb(162, 130, 192);
-  transition: background-color 0.5s;
+  transition: background-color 1s;
+  transition: color 1s;
+  transition: border 1s;
+  transition: box-shadow 1s;
+  animation: changeColor 15s ease infinite;
+  background: linear-gradient(-45deg, #80bf97, #f9e282, #beab4d, #867719);
+  background-size: 400% 400%;
+  color: white;
+  border: solid white 2px;
+  box-shadow: 2px 2px 5px black;
+}
+
+@keyframes changeColor {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* ------ PAGE ------ */
@@ -53,18 +87,25 @@ h1 {
 /* ------- TERRAIN ------ */
 
 .terrain {
-  background-color: lightgray;
-  border-radius: 10px;
+  background-color: #00908c;
+  border-radius: 5px;
+  border: solid #006f8b 2px;
+  box-shadow: 3px 3px 15px #006f8b;
 }
 
 .terrain .cellule {
   width: 30px;
   height: 30px;
-  background-color: rgb(92, 47, 133);
+  background-color: #2f4858;
 }
 
 .terrain .cellule:hover {
-  background-color: rgb(162, 130, 192);
+  transition: background-color 1s;
+  transition: border 1s;
+  animation: changeColor 5s ease infinite;
+  background: linear-gradient(-45deg, #d2fadf, #80bf97, #58b091, #1fa08d);
+  background-size: 200% 200%;
+  border: solid white 1px;
 }
 
 .terrain .cellule.mine {
@@ -81,10 +122,16 @@ h1 {
 .terrain .cellule.OK {
   background: none;
   color: white;
+  width: 30px;
+  height: 30px;
+  padding: 0;
 }
 
 .terrain .cellule.OK:hover {
   background: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
 }
 
 /* background-image: url(medias/pngtree-black-colorful-number-1-png-image_2786493.jpeg);
