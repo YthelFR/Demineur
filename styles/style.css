@@ -9,6 +9,12 @@ body {
   margin: 20px 50px;
 }
 
+.resultat {
+  text-align: center;
+  font-weight: bold;
+  font-size: 30px;
+}
+
 /* ------- MENU ------ */
 
 .menus {
@@ -112,6 +118,9 @@ h1 {
   background-image: url(../medias/bomb-clipart.svg);
   background-color: red;
   cursor: default;
+  background-repeat: no-repeat;
+  justify-content: center;
+  align-items: center;
 }
 
 .terrain .cellule.mine:hover {
@@ -133,6 +142,3 @@ h1 {
   height: 30px;
   padding: 0;
 }
-
-/* background-image: url(medias/pngtree-black-colorful-number-1-png-image_2786493.jpeg);
-    background-size: contain; */

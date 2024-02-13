@@ -196,11 +196,11 @@ export default class Demineur {
     // Je stocke donc le chemin relatif à ces images dans un tableau afin qu'elles soient récupérées au clic utilisateur.
 
     const numberImages = {
-      1: "./medias/pngtree-black-colorful-number-1-png-image_2786493.jpeg",
-      2: "./medias/number-2-34165.png",
-      3: "./medias/pngimg.com - number3_PNG14969.png",
-      4: "",
-      5: "",
+      1: "./medias/numero 1.jpeg",
+      2: "./medias/numero 2.png",
+      3: "./medias/numero 3.png",
+      4: "./medias/numero 4.png",
+      5: "./medias/numero 5.png",
     };
 
     if (this.jeu.terrain[x][y] > 0) {
@@ -255,6 +255,11 @@ export default class Demineur {
       document.getElementById("cellule-" + x + "-" + y).className =
         "cellule marquée";
       document.getElementById("cellule-" + x + "-" + y).innerHTML = "!";
+      document.getElementById("cellule-" + x + "-" + y).style.color = "white";
+      document.getElementById("cellule-" + x + "-" + y).style.justifyContent =
+        "center";
+      document.getElementById("cellule-" + x + "-" + y).style.textAlign =
+        "center";
       this.jeu.terrain[x][y] -= 100;
     }
   }
