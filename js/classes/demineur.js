@@ -12,7 +12,6 @@ export default class Demineur {
   difficultees;
   parametres;
   jeu;
-
   // ============================
   // CONSTRUCTOR
   // ============================
@@ -69,17 +68,20 @@ export default class Demineur {
   // Méthode qui démarre le plateau de jeu pour l'utilisateur à l'initialisation ou au choix de difficulté.
 
   demarrerPlateau() {
+    // Stocke l'élément dans plateau.
     let plateau = document.getElementById("plateau");
 
-    // Pour effacer le résultat de la partie précédente.
+    // Pour effacer le résultat de la partie précédente. Vide le plateau pour revenir à 0.
     plateau.innerHTML = "";
     document.getElementById("resultat").innerHTML = "";
 
+    // Créer la bordure du plateau pour définir la zone.
     let bordure = document.createElement("table");
 
     // Empêcher l'utilisateur de pouvoir cliquer en dehors de la zone de jeu afin d'éviter un bug, pour sécuriser la zone.
     bordure.setAttribute("oncontextmenu", "return false;");
 
+    // Stocke le terrain dans cet élément.
     let terrain = document.createElement("tbody");
     bordure.appendChild(terrain);
 
@@ -103,6 +105,9 @@ export default class Demineur {
         let cellule = document.createElement("td");
         cellule.id = "cellule-" + i + "-" + j;
         cellule.className = "cellule";
+
+        // Mise en place du clic-droit qui permet à l'utilisateur de marquer la case.
+        // Appel des fonctions pour qu'elles soient correctement appliquées sur le jeu.
         cellule.onclick = () => verifierPositionPrincipale(i, j, true);
         cellule.oncontextmenu = (event) => {
           event.preventDefault();
@@ -120,7 +125,10 @@ export default class Demineur {
     // Initialisation du terrain avec toutes les cases à 0.
     // Je mets les lignes et les colonnes à 0.
 
+    // Initialisation du tableau vide.
     this.jeu.terrain = new Array();
+
+    // Boucle pour initialiser toutes les cases à la valeur de 0.
     for (let i = 1; i <= this.parametres["lignes"]; i++) {
       this.jeu.terrain[i] = new Array();
       for (let j = 1; j <= this.parametres["colonnes"]; j++) {
@@ -135,7 +143,7 @@ export default class Demineur {
     for (let i = 1; i <= this.parametres["mines"]; i++) {
       let x = Math.floor(Math.random() * (this.parametres["colonnes"] - 1) + 1);
       let y = Math.floor(Math.random() * (this.parametres["lignes"] - 1) + 1);
-
+      // Si une mine est déjà posée à un endroit, cela va permettre de trouver une autre case libre où poser la mine.
       while (this.jeu.terrain[x][y] == -1) {
         x = Math.floor(Math.random() * (this.parametres["colonnes"] - 1) + 1);
         y = Math.floor(Math.random() * (this.parametres["lignes"] - 1) + 1);
@@ -153,6 +161,7 @@ export default class Demineur {
         }
       }
     }
+    // Démarre le jeu.
     this.jeu.statut = 1;
   }
 
@@ -163,7 +172,10 @@ export default class Demineur {
 
     if (this.jeu.terrain[x][y] == -2) {
       return;
-    } // Bloquer le clic droit sur les cases déjà visitées.
+    }
+
+    // Bloquer le clic droit sur les cases déjà visitées.
+    //Si l'utilisateur a marqué une mine en clic-droit : empêche toute action sur la case.
 
     if (this.jeu.terrain[x][y] < -90) {
       return;
@@ -198,6 +210,8 @@ export default class Demineur {
       imgElement.style.width = "30px";
       imgElement.style.height = "30px";
       this.jeu.terrain[x][y] = -2;
+
+      //Si la case est vide : révèle les autres cases vides.
     } else if (this.jeu.terrain[x][y] == 0) {
       this.jeu.terrain[x][y] = -2;
 
@@ -205,9 +219,9 @@ export default class Demineur {
       // qui sont adjacentes les unes aux autres afin de révéler le terrain vide.
 
       for (let j = x - 1; j <= x + 1; j++) {
-        if (j == 0 || j == this.parametres["colonnes"] + 1) continue;
+        if (j == 0 || j == this.parametres["colonnes"] + 1);
         for (let k = y - 1; k <= y - 1; k++) {
-          if (k == 0 || k == this.parametres["lignes"] + 1) continue;
+          if (k == 0 || k == this.parametres["lignes"] + 1);
           if (this.jeu.terrain[j][k] > -1) {
             this.verifierPosition(j, k, false);
           }
@@ -223,9 +237,10 @@ export default class Demineur {
   marquerPosition(x, y) {
     // Définition d'une action au clic pour l'utilisateur afin de pouvoir cliquer sur les cases du jeu.
 
-    if (this.jeu.statut != 1) return; // Sécurité au cas où la partie n'est pas commencée.
+    if (this.jeu.statut != 1) return; // Sécurité au cas où la partie n'est pas commencée. Vérifie si le jeu est en cours ou non.
 
-    if (this.jeu.terrain[x][y] == -2) return; // Bloquer le clic droit sur les cases déjà visitées.
+    if (this.jeu.terrain[x][y] == -2) return; // Bloquer le clic droit sur les cases déjà visitées. L'utilisateur ne pourra pas marquer
+    //une case qui a déjà été découverte.
 
     // Ajout d'une fonction qui permet à l'utilisateur, en cas de clic-droit sur une case, de
     // marquer la case afin de verrouiller les potentielles position des mines. Bien vérifier quelle
